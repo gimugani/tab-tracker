@@ -3,7 +3,7 @@
     <v-app>
     <app-header></app-header>
       <main>
-        <v-container fluid fill-height>
+        <v-container fluid>
           <router-view/>
         </v-container>
       </main>
