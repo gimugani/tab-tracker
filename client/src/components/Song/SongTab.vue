@@ -7,14 +7,11 @@
   </app-panel>
 </template>
 <script>
-import Panel from'@/components/panel'
+
 export default {
   props: [
     'song'
-  ],
-  components: {
-    appPanel: Panel
-  }
+  ]
 }
 </script>
 <style>

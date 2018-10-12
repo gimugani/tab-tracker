@@ -54,7 +54,6 @@
   </v-layout>
 </template>
 <script>
-import Panel from '@/components/Panel'
 import SongsService from '@/services/SongsService'
 
 export default {
@@ -76,7 +75,7 @@ export default {
     }
   },
   methods: {
-    async create() {
+    async create () {
       this.error = null
       const areAllFieldsFilledIn = Object
           .keys(this.song)
@@ -94,9 +93,6 @@ export default {
         console.log(err)
       }
     }
-  },
-  components: {
-    appPanel: Panel
   }
 }
 </script>

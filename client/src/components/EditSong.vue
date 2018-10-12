@@ -54,7 +54,6 @@
   </v-layout>
 </template>
 <script>
-import Panel from '@/components/Panel'
 import SongsService from '@/services/SongsService'
 
 export default {
@@ -75,26 +74,26 @@ export default {
     }
   },
   methods: {
-    async update() {
+    async update () {
       this.error = null
       const areAllFieldsFilledIn = Object
-          .keys(this.song)
-          .every(key => !!this.song[key])
+        .keys(this.song)
+        .every(key => !!this.song[key])
       if (!areAllFieldsFilledIn) {
         this.error = 'Please fill in all the required fields.'
         return
       }
       const songId = this.$store.state.route.params.songId
       try {
-         await SongsService.update(this.song)
-          this.$router.push({
-            name:'song',
-            params: {
-              songId: songId
-            }
-          })
+        await SongsService.update(this.song)
+        this.$router.push({
+          name: 'song',
+          params: {
+            songId: songId
+          }
+        })
       } catch (err) {
-        consolg.log(err)
+        console.log(err)
       }
     }
   },
@@ -102,12 +101,9 @@ export default {
     try {
       const songId = this.$store.state.route.params.songId
       this.song = (await SongsService.show(songId)).data
-      } catch (err) {
-        console.log(err)
-      }
-  },
-  components: {
-    appPanel: Panel
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 </script>

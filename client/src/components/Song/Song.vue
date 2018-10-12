@@ -21,12 +21,12 @@
 </template>
 
 <script>
+
 import SongsService from '@/services/SongsService'
 import SongYoutube from './SongYoutube'
 import SongLyrics from './SongLyrics'
 import SongTab from './SongTab'
 import SongMetadata from '@/components/Song/SongMetadata'
-import Panel from'@/components/panel'
 
 export default {
   data(){
@@ -39,7 +39,7 @@ export default {
         this.song = (await SongsService.show(songId)).data
   },
   components: {
-    appPanel: Panel,
+
     appSongMetadata: SongMetadata,
     appSongYoutube: SongYoutube,
     appSongTab: SongTab,

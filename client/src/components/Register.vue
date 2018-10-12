@@ -17,8 +17,13 @@
               v-model="password"/>
           </form>
             <br>
-          <div  v-html="error"></div>
-            <br>
+            <v-alert
+              class="ml-4"
+              :value="error"
+              transition="scale-transition"
+              error>
+              {{error}}
+            </v-alert>            <br>
           <v-btn flat small class="cyan" dark @click="register">Register</v-btn>
       </app-panel>
     </v-flex>
@@ -27,7 +32,6 @@
 
 <script>
 import AuthenticationService from '@/services/AuthenticationService'
-import Panel from '@/components/panel'
 export default {
   data () {
     return {
@@ -46,20 +50,18 @@ export default {
         })
         this.$store.dispatch('setToken', response.data.token)
         this.$store.dispatch('setUser', response.data.user)
+        this.$router.push({
+          name: 'songs'
+        })
       } catch (error) {
         this.error = error.response.data.error
       }
     }
-  },
-  components: {
-    appPanel: Panel
   }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  .error {
-    color: red
-  }
+
 </style>

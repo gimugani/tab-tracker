@@ -8,7 +8,14 @@
           absolute
           right
           fab
-          :to="{ name: 'song-edit', params: {songId: song.id}}">
+          :to="{
+            name: 'song-edit',
+            params() {
+              return  {
+                  songId: song.id
+                }
+              }
+            }">
         <v-icon>edit</v-icon>
         </v-btn>
     <v-layout>
@@ -16,6 +23,18 @@
         <div class="song-title"> {{song.title}} </div>
         <div class="song-artist"> {{song.artist}} </div>
         <div class="song-genre"> {{song.album}} </div>
+        <v-btn
+          v-if="isUserLoggedIn && !bookmark"
+          dark
+          class="cyan mt-5"
+          @click="setAsBookmark"
+          >Bookmark</v-btn>
+        <v-btn
+          v-if="isUserLoggedIn && bookmark"
+          dark
+          class="cyan mt-5"
+          @click="unsetAsBookmark"
+          >Unbookmark</v-btn>
       </v-flex>
       <v-flex xs6>
         <img :src="song.albumImageUrl" class="album-image">
@@ -27,13 +46,57 @@
 </template>
 
 <script>
-import Panel from'@/components/panel'
+import { mapState } from 'vuex'
+import BookmarkService from '@/services/BookmarkService'
+
 export default {
   props: [
     'song'
   ],
-  components: {
-    appPanel: Panel
+  data () {
+    return {
+      bookmark:  null
+    }
+  },
+  methods: {
+    async setAsBookmark(){
+      try {
+        this.bookmark = (await BookmarkService.post({
+          songId: this.song.id,
+          userId: this.$store.state.user.id
+        })).data
+      } catch (err){
+        console.log(err)
+      }
+    },
+    async unsetAsBookmark(){
+      try {
+        await BookmarkService.delete(this.bookmark.id)
+        this.bookmark = null
+      } catch (err){
+        console.log(err)
+      }
+    }
+  },
+  computed: {
+    ...mapState([
+      'isUserLoggedIn'
+    ])
+  },
+  watch: {
+    async song(){
+      if (!this.isUserLoggedIn){
+        return;
+      }
+      try{
+        this.bookmark = (await BookmarkService.index({
+          songId: this.song.id,
+          userId: this.$store.state.user.id
+        })).data
+      } catch (err) {
+        console.log(err)
+      }
+    }
   }
 }
 </script>
